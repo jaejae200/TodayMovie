@@ -1,4 +1,5 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
@@ -42,3 +43,12 @@ def logout(request):
     logout(request)
 
     return redirect('articles:index')
+
+def detail(request, pk):
+    user = get_object_or_404(get_user_model(), pk=pk)
+    
+    context = {
+        'user': user
+    }
+
+    return render(request, 'accounts/detail.html', context)

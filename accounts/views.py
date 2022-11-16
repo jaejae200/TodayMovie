@@ -3,7 +3,8 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth import login
 from django.contrib.auth import logout
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CustomUserCreationForm
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm, CustomUserChangeForm
 import requests
 
 # Create your views here.
@@ -52,3 +53,19 @@ def detail(request, pk):
     }
 
     return render(request, 'accounts/detail.html', context)
+
+@login_required
+def update(request):
+    if request.method == 'POST':
+        update_form = CustomUserChangeForm(request.POST, instance=request.user)
+        if update_form.is_valid():
+            update_form.save()
+            return redirect('accounts:detail', request.user.pk)
+    else:
+        update_form = CustomUserChangeForm(instance=request.user)
+    
+    context = {
+        'update_form': update_form
+    }
+    
+    return render(request, 'accounts/update.html', context)

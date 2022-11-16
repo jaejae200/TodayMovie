@@ -3,4 +3,11 @@
 {% block css %}
   <link rel="stylesheet" href="{% static 'css/style.css'%}">
 {% endblock %}
-{% block body %}{% endblock %}
+{% block body %}
+  <h1 class="my-3 py-3 text-center">회원가입</h1>
+  <form action="" method="POST">
+    {% csrf_token %}
+    {% bootstrap_form signup_form %}
+    <button type='submit' class="btn btn-primary float-end">회원가입</button>
+  </form>
+{% endblock %}

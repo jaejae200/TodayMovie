@@ -20,3 +20,18 @@ def signup(request):
     }
 
     return render(request, 'accounts/signup.html', context)
+
+def login(request):
+    if request.method == 'POST':
+        login_form = AuthenticationForm(request, data=request.POST)
+        if login_form.is_valid():
+            login(request, login_form.get_user())
+    
+    else:
+        login_form = AuthenticationForm()
+
+    context = {
+        'login_form' : login_form
+    }
+
+    return render(request, 'accounts/login.html', context)

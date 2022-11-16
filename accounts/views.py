@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.contrib.auth import login
+from django.contrib.auth.forms import AuthenticationForm
 from .forms import CustomUserCreationForm
 import requests
 
@@ -7,11 +8,15 @@ import requests
 
 def signup(request):
     if request.method == 'POST':
-        sigup_form = CustomUserCreationForm(request.POST)
-        if sigup_form.is_valid():
+        signup_form = CustomUserCreationForm(request.POST)
+        if signup_form.is_valid():
             user = sigup_form.save()
             login(request, user)
     else:
         sigup_form = CustomUserCreationForm()
-        
-    return render(request, 'accounts/signup.html')
+
+    context = {
+        'signup_form' : signup_form, 
+    }
+
+    return render(request, 'accounts/signup.html', context)
